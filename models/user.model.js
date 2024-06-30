@@ -33,8 +33,8 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     ImapPort:{
-        type:Number,
-        default:993
+        type:String,
+        default:'993'
     }
 
 }, { timestamps: true });

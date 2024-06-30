@@ -1,4 +1,8 @@
-import { useState } from 'react';
+
+"use client"
+
+
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -18,6 +22,24 @@ export default function SendEmail() {
     const [smtpStatus, setSmtpStatus] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    // Load saved credentials from localStorage when the component mounts
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const savedSmtpUser = localStorage.getItem('smtpUser');
+            const savedSmtpPass = localStorage.getItem('smtpPass');
+            const savedHost = localStorage.getItem('host');
+            const savedSmtpPort = localStorage.getItem('smtpPort');
+
+            if (savedSmtpUser && savedSmtpPass && savedHost && savedSmtpPort) {
+                setSmtpUser(savedSmtpUser);
+                setSmtpPass(savedSmtpPass);
+                setHost(savedHost);
+                setSmtpPort(savedSmtpPort);
+                setIsAuthenticated(true);
+            }
+        }
+    }, []);
+
     // Handle form submission for saving SMTP details
     const handleSaveDetails = async (e) => {
         e.preventDefault();
@@ -28,8 +50,19 @@ export default function SendEmail() {
                 smtpUser,
                 smtpPass,
                 host,
-                smtpPort
+                smtpPort,
+                ImapPort:'993'
             });
+
+            // Store credentials in localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('smtpUser', smtpUser);
+                localStorage.setItem('smtpPass', smtpPass);
+                localStorage.setItem('host', host);
+                localStorage.setItem('smtpPort', smtpPort);
+                localStorage.setItem('ImapPort','993')
+            }
+
             setSmtpStatus('SMTP Credentials saved successfully');
             setIsAuthenticated(true);
             console.log(response.data); // Log success response
@@ -74,6 +107,13 @@ export default function SendEmail() {
         setSmtpStatus('');
         setIsAuthenticated(false);
 
+        // Clear credentials from localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('smtpUser');
+            localStorage.removeItem('smtpPass');
+            localStorage.removeItem('host');
+            localStorage.removeItem('smtpPort');
+        }
     };
 
     return (
@@ -207,7 +247,7 @@ export default function SendEmail() {
                     </button>
                     <div className="flex space-x-4">
                         <Link href="/sent-emails">
-                            <div className="bg-purple-500 hover:bg-purple-700 text-white                             font-bold py-2 px-4 rounded text-center">
+                            <div className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded text-center">
                                 Sent Emails
                             </div>
                         </Link>
@@ -222,4 +262,3 @@ export default function SendEmail() {
         </div>
     );
 }
-

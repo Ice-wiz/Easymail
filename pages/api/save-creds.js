@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         return res.status(405).send('Method Not Allowed');
     }
 
-    const { smtpUser, smtpPass, host, smtpPort } = req.body;
+    const { smtpUser, smtpPass, host, smtpPort , ImapPort } = req.body;
 
     try {
         // Connect to MongoDB
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
             smtpPass,
             host,
             smtpPort,
+            ImapPort
         });
 
         if (existingDetails) {
@@ -33,6 +34,7 @@ export default async function handler(req, res) {
             smtpPass,
             host,
             smtpPort,
+            ImapPort
         });
 
 
