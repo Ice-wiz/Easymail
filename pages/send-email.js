@@ -73,7 +73,7 @@ export default function SendEmail() {
         setStatus('');
         setSmtpStatus('');
         setIsAuthenticated(false);
-        localStorage.removeItem('user');
+
     };
 
     return (

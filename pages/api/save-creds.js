@@ -35,8 +35,6 @@ export default async function handler(req, res) {
             smtpPort,
         });
 
-        localStorage.setItem("user",smtpUser);
-        console.log(localStorage.getItem('user'))
 
         res.status(200).json({ message: 'Email details stored successfully' });
     } catch (error) {

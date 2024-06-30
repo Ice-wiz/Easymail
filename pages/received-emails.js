@@ -6,7 +6,7 @@ const ReceivedEmails = () => {
     const [emails, setEmails] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    localStorage.getItem('user');
+
 
     useEffect(() => {
         const fetchEmails = async () => {
