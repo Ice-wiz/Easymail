@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     const { smtpUser, smtpPass, host, smtpPort , ImapPort } = req.body;
 
     try {
-        // Connect to MongoDB
+     
         const client = await clientPromise;
         const db = client.db();
 
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
             return res.status(200).json({ message: 'Email details already stored , Success' });
         }
 
-        // Store the email details if they are not already in the database
         await db.collection('users').insertOne({
             smtpUser,
             smtpPass,

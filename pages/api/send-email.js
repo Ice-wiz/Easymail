@@ -11,17 +11,17 @@ export default async function handler(req, res) {
     const { recipient, subject, body , senderName , smtpUser , smtpPass , host , smtpPort } = req.body;
     console.log(senderName)
 
-    // Generate a unique reference code
+
     const referenceCode = `REF-${Date.now()}`;
 
-    // Append reference code to the subject
+
     const subjectWithRef = `${subject} [${referenceCode}]`;
 
     // Create SMTP transporter with environment variables
     let transporter = nodemailer.createTransport({
         host: host,
         port: smtpPort,
-        secure: false, // false for STARTTLS
+        secure: false, 
         auth: {
             user: smtpUser,
             pass: smtpPass
@@ -30,18 +30,21 @@ export default async function handler(req, res) {
 
     // Email options
     let mailOptions = {
-        from: `"${senderName}" <${smtpUser}>`, // Sender address
-        to: recipient, // List of recipients
-        subject: subjectWithRef, // Subject line
-        text: body, // Plain text body
-        html: `<p>${body}</p>` // HTML body
+        from: `"${senderName}" <${smtpUser}>`, 
+        to: recipient,
+        subject: subjectWithRef, 
+        text: body, 
+        html: `<p>${body}</p>` 
     };
 
     try {
+
         // Attempt to send the email
+
         let info = await transporter.sendMail(mailOptions);
 
-        // Connect to MongoDB and store the email details
+        // call to mongo here 
+        
         const client = await clientPromise;
         const db = client.db();
         const collection = db.collection('sentEmails');
@@ -59,7 +62,7 @@ export default async function handler(req, res) {
 
         res.status(200).json({ message: 'Email sent', info });
     } catch (error) {
-        console.error('Error sending email:', error); // Log the error
+        console.error('Error sending email:', error); 
         res.status(500).json({ message: 'Error sending email', error: error.message });
     }
 }

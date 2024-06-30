@@ -1,19 +1,14 @@
-
 "use client"
 
-
+import Navbar from '../components/navbar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
 
 export default function SendEmail() {
-    // State for SMTP authentication details
     const [smtpUser, setSmtpUser] = useState('');
     const [smtpPass, setSmtpPass] = useState('');
     const [host, setHost] = useState('');
     const [smtpPort, setSmtpPort] = useState('');
-
-    // State for email details
     const [recipient, setRecipient] = useState('');
     const [senderName, setSenderName] = useState('');
     const [subject, setSubject] = useState('');
@@ -22,7 +17,6 @@ export default function SendEmail() {
     const [smtpStatus, setSmtpStatus] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Load saved credentials from localStorage when the component mounts
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const savedSmtpUser = localStorage.getItem('smtpUser');
@@ -40,7 +34,6 @@ export default function SendEmail() {
         }
     }, []);
 
-    // Handle form submission for saving SMTP details
     const handleSaveDetails = async (e) => {
         e.preventDefault();
         setSmtpStatus('Saving...');
@@ -51,27 +44,25 @@ export default function SendEmail() {
                 smtpPass,
                 host,
                 smtpPort,
-                ImapPort:'993'
+                ImapPort: '993'
             });
 
-            // Store credentials in localStorage
             if (typeof window !== 'undefined') {
                 localStorage.setItem('smtpUser', smtpUser);
                 localStorage.setItem('smtpPass', smtpPass);
                 localStorage.setItem('host', host);
                 localStorage.setItem('smtpPort', smtpPort);
-                localStorage.setItem('ImapPort','993')
+                localStorage.setItem('ImapPort', '993');
             }
 
             setSmtpStatus('SMTP Credentials saved successfully');
             setIsAuthenticated(true);
-            console.log(response.data); // Log success response
+            console.log(response.data);
         } catch (error) {
             setSmtpStatus(`Error saving SMTP Credentials: ${error.response ? error.response.data.message : error.message}`);
         }
     };
 
-    // Handle email submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('Sending...');
@@ -93,7 +84,6 @@ export default function SendEmail() {
         }
     };
 
-    // Handle reset
     const handleReset = () => {
         setSmtpUser('');
         setSmtpPass('');
@@ -107,7 +97,6 @@ export default function SendEmail() {
         setSmtpStatus('');
         setIsAuthenticated(false);
 
-        // Clear credentials from localStorage
         if (typeof window !== 'undefined') {
             localStorage.removeItem('smtpUser');
             localStorage.removeItem('smtpPass');
@@ -117,148 +106,149 @@ export default function SendEmail() {
     };
 
     return (
-        <div className="py-2 min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-green-400">
-            <div className="max-w-4xl w-full p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-8">
-                <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-                    <h1 className="text-2xl font-bold mb-4 text-center">SMTP Authentication</h1>
-                    <form onSubmit={handleSaveDetails}>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">SMTP User:</label>
-                            <input
-                                type="text"
-                                value={smtpUser}
-                                onChange={(e) => setSmtpUser(e.target.value)}
-                                required
-                                disabled={isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">SMTP Password:</label>
-                            <input
-                                type="password"
-                                value={smtpPass}
-                                onChange={(e) => setSmtpPass(e.target.value)}
-                                required
-                                disabled={isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">SMTP Host:</label>
-                            <input
-                                type="text"
-                                value={host}
-                                onChange={(e) => setHost(e.target.value)}
-                                required
-                                disabled={isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">SMTP Port:</label>
-                            <input
-                                type="text"
-                                value={smtpPort}
-                                onChange={(e) => setSmtpPort(e.target.value)}
-                                required
-                                disabled={isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isAuthenticated ? 'bg-green-600' : 'bg-gray-500'} hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-                            disabled={isAuthenticated}
-                        >
-                            {isAuthenticated ? 'Authenticated' : 'Save Details'}
-                        </button>
-                    </form>
-                    {smtpStatus && (
-                        <p className={`mt-4 text-sm ${smtpStatus.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>{smtpStatus}</p>
-                    )}
-                </div>
+        <main className="min-h-screen flex flex-col bg-black text-white">
+            <Navbar />
 
-                <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-                    <h1 className="text-2xl font-bold mb-4 text-center">Send Email</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Sender Name:</label>
-                            <input
-                                type="text"
-                                value={senderName}
-                                onChange={(e) => setSenderName(e.target.value)}
-                                required
-                                disabled={!isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Recipient Email:</label>
-                            <input
-                                type="email"
-                                value={recipient}
-                                onChange={(e) => setRecipient(e.target.value)}
-                                required
-                                disabled={!isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Subject:</label>
-                            <input
-                                type="text"
-                                value={subject}
-                                onChange={(e) => setSubject(e.target.value)}
-                                required
-                                disabled={!isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Body:</label>
-                            <textarea
-                                value={body}
-                                onChange={(e) => setBody(e.target.value)}
-                                required
-                                disabled={!isAuthenticated}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            ></textarea>
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            disabled={!isAuthenticated}
-                        >
-                            Send Email
-                        </button>
-                    </form>
-                    {status && (
-                        <p className={`mt-4 text-sm ${status.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>{status}</p>
-                    )}
+            <header className="pt-20 pb-10 bg-black">
+                <div className="max-w-screen-lg mx-auto px-4 text-center">
+                    <h1 className="text-5xl font-extrabold mb-4">Send Email</h1>
+                    <p className="text-lg text-slate-200">
+                        Use the form below to authenticate and send an email.
+                    </p>
                 </div>
-                
-                <div className="col-span-2 mt-6 flex justify-between">
-                    <button
-                        onClick={handleReset}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                        Reset
-                    </button>
-                    <div className="flex space-x-4">
-                        <Link href="/sent-emails">
-                            <div className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded text-center">
-                                Sent Emails
+            </header>
+
+            <section className="flex-grow flex flex-col justify-center items-center px-4 bg-black">
+                <div className="max-w-5xl w-full p-6 bg-gray-800 rounded-lg shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="p-6 bg-gray-900 rounded-lg shadow-md">
+                        <h2 className="text-2xl font-bold mb-4 text-center">SMTP Authentication</h2>
+                        <form onSubmit={handleSaveDetails}>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">SMTP User:</label>
+                                <input
+                                    type="text"
+                                    value={smtpUser}
+                                    onChange={(e) => setSmtpUser(e.target.value)}
+                                    required
+                                    disabled={isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
                             </div>
-                        </Link>
-                        <Link href="/">
-                            <div className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-center">
-                                Go to Dashboard
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">SMTP Password:</label>
+                                <input
+                                    type="password"
+                                    value={smtpPass}
+                                    onChange={(e) => setSmtpPass(e.target.value)}
+                                    required
+                                    disabled={isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
                             </div>
-                        </Link>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">SMTP Host:</label>
+                                <input
+                                    type="text"
+                                    value={host}
+                                    onChange={(e) => setHost(e.target.value)}
+                                    required
+                                    disabled={isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">SMTP Port:</label>
+                                <input
+                                    type="text"
+                                    value={smtpPort}
+                                    onChange={(e) => setSmtpPort(e.target.value)}
+                                    required
+                                    disabled={isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isAuthenticated ? 'bg-green-600' : 'bg-gray-500'} hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                                disabled={isAuthenticated}
+                            >
+                                {isAuthenticated ? 'Authenticated' : 'Save Details'}
+                            </button>
+                        </form>
+                        {smtpStatus && (
+                            <p className={`mt-4 text-sm ${smtpStatus.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>{smtpStatus}</p>
+                        )}
+                    </div>
+
+                    <div className="p-6 bg-gray-900 rounded-lg shadow-md">
+                        <h2 className="text-2xl font-bold mb-4 text-center">Send Email</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">Sender Name:</label>
+                                <input
+                                    type="text"
+                                    value={senderName}
+                                    onChange={(e) => setSenderName(e.target.value)}
+                                    required
+                                    disabled={!isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">Recipient Email:</label>
+                                <input
+                                    type="email"
+                                    value={recipient}
+                                    onChange={(e) => setRecipient(e.target.value)}
+                                    required
+                                    disabled={!isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">Subject:</label>
+                                <input
+                                    type="text"
+                                    value={subject}
+                                    onChange={(e) => setSubject(e.target.value)}
+                                    required
+                                    disabled={!isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-400">Body:</label>
+                                <textarea
+                                    value={body}
+                                    onChange={(e) => setBody(e.target.value)}
+                                    required
+                                    disabled={!isAuthenticated}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                                ></textarea>
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                disabled={!isAuthenticated}
+                            >
+                                Send Email
+                            </button>
+                        </form>
+                        {status && (
+                            <p className={`mt-4 text-sm ${status.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>{status}</p>
+                        )}
+                    </div>
+
+                    <div className="col-span-1 md:col-span-2 mt-6 flex justify-center">
+                        <button
+                            onClick={handleReset}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md shadow-lg"
+                        >
+                            Reset
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }

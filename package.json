@@ -24,6 +24,7 @@
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^5.2.1",
     "readable-stream": "^4.5.2",
     "tls": "^0.0.1"
   },
