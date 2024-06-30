@@ -6,7 +6,7 @@ export default function Home() {
 
             <header className="pt-20 pb-10 bg-gradient-to-r from-blue-500 to-green-500 text-white">
                 <div className="max-w-screen-lg mx-auto px-4">
-                    <h1 className="text-4xl font-bold text-center mb-4">Welcome to Your Email Service</h1>
+                    <h1 className="text-4xl font-bold text-center mb-4">Welcome to Your Easymail</h1>
                     <p className="text-lg text-center">
                         Your personalized email solution for seamless communication.
                     </p>
@@ -19,19 +19,19 @@ export default function Home() {
                
                     <Link href="/send-email" passHref>
                         <div className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 cursor-pointer">
-                            Compose new
+                            Authorize and compose mail
                         </div>
                     </Link>
                   
                     <Link href="/check-emails" passHref>
                         <div className="bg-green-600 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 cursor-pointer">
-                           Check Inbox
+                           Check Your Inbox 
                         </div>
                     </Link>
                
                     <Link href="/sent-emails" passHref>
                         <div className="bg-purple-600 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 cursor-pointer">
-                            Sent Emails
+                           Check All Sent Emails 
                         </div>
                     </Link>
                 </div>
