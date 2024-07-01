@@ -57,12 +57,12 @@ export default function CheckEmailsPage() {
     }, [router]);
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-900 via-gray-900 to-black text-white">
-            <h1 className="text-3xl font-bold mb-6">Email Check</h1>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-900 via-gray-900 to-black text-white p-4">
+            <h1 className="text-3xl font-bold mb-6 text-center">Email Check</h1>
             {loading ? (
                 <div className="flex flex-col items-center">
                     <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 mb-4"></div>
-                    <p className="text-xl">Hang on tight, checking for new emails...</p>
+                    <p className="text-xl text-center">Hang on tight, checking for new emails...</p>
                 </div>
             ) : (
                 <div className="text-center">
@@ -70,7 +70,7 @@ export default function CheckEmailsPage() {
                     {credentialsMissing && (
                         <button
                             onClick={() => router.push('/')}
-                            className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300"
+                            className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-sm shadow-lg transition duration-300"
                         >
                             Go to Dashboard
                         </button>
